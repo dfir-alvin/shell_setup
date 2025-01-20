@@ -96,7 +96,7 @@ configure_prompt() {
     #[ "$EUID" -eq 0 ] && prompt_symbol=💀
     case "$PROMPT_ALTERNATIVE" in
         twoline)
-            PROMPT=$'%F{196}┌──(%f%n%F{226}@%f%F{51}%m%f%F{196})-[%f%F{46}%d%f%F{196}]%f\n%F{196}└─%f%(#.%F{196}#.%F{226}$)%F{reset} '
+            PROMPT=$'%F{196}┌──(%f%n%F{196}@%f%F{51}%m%f%F{196})-[%f%F{46}%d%f%F{196}]%f\n%F{196}└─%f%(#.%F{196}#.%F{255}$)%F{reset} '
             # Right-side prompt with exit codes and background processes
             #RPROMPT=$'%(?.. %? %F{red}%B⨯%b%F{reset})%(1j. %j %F{yellow}%B⚙%b%F{reset}.)'
             ;;
@@ -114,10 +114,10 @@ configure_prompt() {
 
 # The following block is surrounded by two delimiters.
 # These delimiters must not be modified. Thanks.
-# Two line terminal config
+# START KALI CONFIG VARIABLES
 PROMPT_ALTERNATIVE=twoline
 NEWLINE_BEFORE_PROMPT=yes
-# Two line terminal config - END
+# STOP KALI CONFIG VARIABLES
 
 if [ "$color_prompt" = yes ]; then
     # override default virtualenv indicator in prompt
@@ -239,7 +239,7 @@ if [ -x /usr/bin/dircolors ]; then
     zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 fi
 
-# some more aliases
+# some more ls aliases
 alias ll='ls -lh'
 alias la='ls -lha'
 alias l='ls -CF'
@@ -251,48 +251,9 @@ alias ..='cd ..'
 alias cp='cp -i'
 alias df='df -h'               # human-readable sizes
 alias grep='grep --color=auto -i' # colorize output (good for log files)
-alias lgrep='grep --color=auto --context=1 -i' # colorize output (good for log files)
-alias nano='nano -c' # show nano with line numbering
+alias grepl='grep --color=auto --context=1' # colorize output (good for log files)
+alias nano='nano -c' # show nano with lines
 alias netstat='netstat -nao'
-
-### ARCHIVE EXTRACTION
-# usage: ex <file>
-function ex {
- if [ -z "$1" ]; then
-    # display usage if no parameters given
-    echo "Usage: ex <path/file_name>.<zip|rar|bz2|gz|tar|tbz2|tgz|Z|7z|xz|ex|tar.bz2|tar.gz|tar.xz>"
-    echo "       extract <path/file_name_1.ext> [path/file_name_2.ext] [path/file_name_3.ext]"
- else
-    for n in "$@"
-    do
-      if [ -f "$n" ] ; then
-          case "${n%,}" in
-            *.cbt|*.tar.bz2|*.tar.gz|*.tar.xz|*.tbz2|*.tgz|*.txz|*.tar)
-                         tar xvf "$n"       ;;
-            *.lzma)      unlzma ./"$n"      ;;
-            *.bz2)       bunzip2 ./"$n"     ;;
-            *.cbr|*.rar)       unrar x -ad ./"$n" ;;
-            *.gz)        gunzip ./"$n"      ;;
-            *.cbz|*.epub|*.zip)       unzip ./"$n"       ;;
-            *.z)         uncompress ./"$n"  ;;
-            *.7z|*.arj|*.cab|*.cb7|*.chm|*.deb|*.dmg|*.iso|*.lzh|*.msi|*.pkg|*.rpm|*.udf|*.wim|*.xar)
-                         7z x ./"$n"        ;;
-            *.xz)        unxz ./"$n"        ;;
-            *.exe)       cabextract ./"$n"  ;;
-            *.cpio)      cpio -id < ./"$n"  ;;
-            *.cba|*.ace)      unace x ./"$n"      ;;
-            *)
-                         echo "ex: '$n' - unknown archive method"
-                         return 1
-                         ;;
-          esac
-      else
-          echo "'$n' - file does not exist"
-          return 1
-      fi
-    done
-fi
-}
 
 # enable auto-suggestions based on the history
 if [ -f /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
@@ -305,3 +266,9 @@ fi
 if [ -f /etc/zsh_command_not_found ]; then
     . /etc/zsh_command_not_found
 fi
+
+# Startup Stats
+lsb_release -d | awk '{print substr($0,index($0,$2))}' 
+top -bn1 | grep load | awk '{printf "CPU Load: %.2f\n", $(NF-2)}'
+free -m | awk 'NR==2{printf "Memory Usage: %s/%sMB (%.2f%%)\n", $3,$2,$3*100/$2 }'
+df -h | awk '$NF=="/"{printf "Disk Usage: %d/%dGB (%s)\n", $3,$2,$5}'
