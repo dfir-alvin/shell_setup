@@ -149,10 +149,11 @@ alias _i='sudo -i'
 alias ..='cd ..'
 alias cp='cp -i'
 alias df='df -h'               # human-readable sizes
-alias grep='grep --color=auto -i' # colorize output (good for log files)
-alias lgrep='grep --color=auto --context=1 -i' # colorize output (good for log files)
-alias nano='nano -c' # show nano with line numbering
+alias nano='nano -c' # show nano with lines
 alias netstat='netstat -nao'
+alias igrep='grep --color=auto -i' # case insenative
+alias vgrep='grep --color=auto -vi' # case insensative not match
+alias lgrep='grep --color=auto --context=1 -i' # case insensative with line count
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
@@ -165,8 +166,12 @@ if ! shopt -oq posix; then
   fi
 fi
 
-# show system info on login
-lsb_release -d | awk '{print substr($0,index($0,$2))}' 
-top -bn1 | grep load | awk '{printf "CPU Load: %.2f\n", $(NF-2)}'
-free -m | awk 'NR==2{printf "Memory Usage: %s/%sMB (%.2f%%)\n", $3,$2,$3*100/$2 }'
+# show system info on login, if landscape-sysinfo is not installed
+if ! [ -x "$(command -v landscape-sysinfo)" ]; then
+	echo ""
+	lsb_release -d | awk '{print substr($0,index($0,$2))}' 
+	top -bn1 | grep load | awk '{printf "CPU Load: %.2f\n", $(NF-2)}'
+	free -m | awk 'NR==2{printf "Memory Usage: %s/%sMB (%.2f%%)\n", $3,$2,$3*100/$2 }'
+	df -h | awk '$NF=="/"{printf "Disk Usage: %d/%dGB (%s)\n", $3,$2,$5}'
+fi 
 df -h | awk '$NF=="/"{printf "Disk Usage: %d/%dGB (%s)\n", $3,$2,$5}'
