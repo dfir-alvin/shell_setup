@@ -4,7 +4,7 @@
 ````
 wget https://github.com/dfir-alvin/shell_setup/blob/main/bash_setup.txt
 mv ~/.bashrc bashrc_backup
-mv bash_theme.txt ~/.bashrc
+mv bash_setup.txt ~/.bashrc
 ````
 
 ## zsh
@@ -12,5 +12,5 @@ mv bash_theme.txt ~/.bashrc
 sudo apt install zsh zsh-syntax-highlighting zsh-autosuggestions
 wget https://github.com/dfir-alvin/shell_setup/blob/main/zsh_setup.txt
 mv ~/.zshrc zshrc_backup
-mv zsh_theme.txt ~/.zshrc
+mv zsh_setup.txt ~/.zshrc
 ````
