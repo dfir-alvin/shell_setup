@@ -165,5 +165,8 @@ if ! shopt -oq posix; then
   fi
 fi
 
-# show system stats on login
-landscape-sysinfo
+# show system info on login
+lsb_release -d | awk '{print substr($0,index($0,$2))}' 
+top -bn1 | grep load | awk '{printf "CPU Load: %.2f\n", $(NF-2)}'
+free -m | awk 'NR==2{printf "Memory Usage: %s/%sMB (%.2f%%)\n", $3,$2,$3*100/$2 }'
+df -h | awk '$NF=="/"{printf "Disk Usage: %d/%dGB (%s)\n", $3,$2,$5}'
