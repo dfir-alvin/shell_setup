@@ -96,7 +96,7 @@ configure_prompt() {
     #[ "$EUID" -eq 0 ] && prompt_symbol=💀
     case "$PROMPT_ALTERNATIVE" in
         twoline)
-            PROMPT=$'%F{196}┌──(%f%n%F{196}@%f%F{51}%m%f%F{196})-[%f%F{46}%d%f%F{196}]%f\n%F{196}└─%f%(#.%F{196}#.%F{255}$)%F{reset} '
+            PROMPT=$'%F{196}┌──[%f%n%F{196}@%f%F{51}%m%f%F{196}]-[%f%F{46}%d%f%F{196}]%f\n%F{196}└─%f%(#.%F{196}#.%F{255}$)%F{reset} '
             # Right-side prompt with exit codes and background processes
             #RPROMPT=$'%(?.. %? %F{red}%B⨯%b%F{reset})%(1j. %j %F{yellow}%B⚙%b%F{reset}.)'
             ;;
@@ -270,8 +270,7 @@ fi
 
 # show system info on login, if landscape-sysinfo is not installed
 if ! [ -x "$(command -v landscape-sysinfo)" ]; then
-	echo ""
-	lsb_release -d | awk '{print substr($0,index($0,$2))}' 
+	lsb_release -d | awk '{printf "\033[1m"substr($0,index($0,$2))"\033[0m\n"}'
 	top -bn1 | grep load | awk '{printf "CPU Load: %.2f\n", $(NF-2)}'
 	free -m | awk 'NR==2{printf "Memory Usage: %s/%sMB (%.2f%%)\n", $3,$2,$3*100/$2 }'
 	df -h | awk '$NF=="/"{printf "Disk Usage: %d/%dGB (%s)\n", $3,$2,$5}'
