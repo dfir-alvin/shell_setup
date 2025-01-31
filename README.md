@@ -19,4 +19,5 @@ mv zsh_setup.txt ~/.zshrc
 ````
 New-Item -Path $PROFILE -Type File -Force
 Invoke-WebRequest "https://raw.githubusercontent.com/dfir-alvin/shell_setup/refs/heads/main/Microsoft.PowerShell_profile.ps1" -OutFile "C:\Users\$Env:UserName\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1"
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ````
