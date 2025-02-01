@@ -173,6 +173,13 @@ if ! [ -x "$(command -v landscape-sysinfo)" ]; then
 	top -bn1 | grep load | awk '{printf "CPU Load: %.2f\n", $(NF-2)}'
 	free -m | awk 'NR==2{printf "Memory Usage: %s/%sMB (%.2f%%)\n", $3,$2,$3*100/$2 }'
 	df -h | awk '$NF=="/"{printf "Disk Usage: %d/%dGB (%s)\n", $3,$2,$5}'
-	/usr/lib/update-notifier/apt-check --human-readable
 	echo ""
+else [ -x "$(command -v landscape-sysinfo)" ]
+	/etc/update-motd.d/00-header
+	/etc/update-motd.d/10-help-text
+	/etc/update-motd.d/50-landscape-sysinfo
+	/etc/update-motd.d/90-updates-available
+	/etc/update-motd.d/91-release-upgrade
+	/etc/update-motd.d/98-fsck-at-reboot
+	/etc/update-motd.d/98-reboot-required
 fi
