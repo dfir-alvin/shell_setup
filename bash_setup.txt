@@ -178,7 +178,7 @@ if ! [ -x "$(command -v landscape-sysinfo)" ]; then
 	free -m | awk 'NR==2{printf "Memory Usage: %s/%sMB (%.2f%%)\n", $3,$2,$3*100/$2 }'
 	df -h | awk '$NF=="/"{printf "Disk Usage: %d/%dGB (%s)\n", $3,$2,$5}'
 	echo ""
-else [ -x "$(command -v landscape-sysinfo)" ]
+elif [ "$(grep -c "UsePAM no" /etc/ssh/sshd_config)" -eq 1 ];then
 	/etc/update-motd.d/00-header
 	/etc/update-motd.d/10-help-text
 	/etc/update-motd.d/50-landscape-sysinfo
