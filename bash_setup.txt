@@ -77,10 +77,14 @@ unset color_prompt force_color_prompt
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
 xterm*|rxvt*)
-# Red Base
+if [ $(id -u) -eq 0 ]; then
+    PS1="\[$(tput setaf 196)\]┌──[\[$(tput setaf 226)\]\u\[$(tput setaf 196)\]@\[$(tput setaf 45)\]\h\[$(tput setaf 196)\]]─[\[$(tput setaf 82)\]\w\[$(tput setaf 196)\]]\n└──╼\[$(tput setaf 226)\]# \[\e[0m\]"
+else
+    # Red Base
     PS1="\[$(tput setaf 196)\]┌──[\[$(tput setaf 15)\]\u\[$(tput setaf 196)\]@\[$(tput setaf 45)\]\h\[$(tput setaf 196)\]]─[\[$(tput setaf 82)\]\w\[$(tput setaf 196)\]]\n└──╼\[$(tput setaf 15)\]$ \[\e[0m\]"
-# White Base
-#    PS1="\[$(tput setaf 7)\]┌──[\[$(tput setaf 45)\]\u\[$(tput setaf 7)\]@\[$(tput setaf 208)\]\h\[$(tput setaf 7)\]]─[\[$(tput setaf 82)\]\w\[$(tput setaf 7)\]]\n└──╼\[$(tput setaf 45)\]$ \[\e[0m\]"
+    # White Base
+    # PS1="\[$(tput setaf 7)\]┌──[\[$(tput setaf 45)\]\u\[$(tput setaf 7)\]@\[$(tput setaf 208)\]\h\[$(tput setaf 7)\]]─[\[$(tput setaf 82)\]\w\[$(tput setaf 7)\]]\n└──╼\[$(tput setaf 45)\]$ \[\e[0m\]"
+fi
     ;;
 *)
     ;;
